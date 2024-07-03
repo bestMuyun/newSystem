@@ -77,7 +77,7 @@ export default {
     methods: {
         async searchList() {
             try {
-                const res = await axios.post("http://localhost:8080/role/list", this.form);
+                const res = await axios.post("http://localhost:8081/role/list", this.form);
                 if (res.data.code === 200) {
                     this.roles = res.data.data;
                     return;
@@ -92,7 +92,7 @@ export default {
         async deleteRole(row) {
             try {
                 await ElMessageBox.confirm("此操作将永久删除该角色, 是否继续?", "提示", {});
-                const res = await axios.delete("http://localhost:8080/role/delete/" + row.id);
+                const res = await axios.delete("http://localhost:8081/role/delete/" + row.id);
                 if (res.data.code === 200) {
                     ElMessage.success(res.data.msg);
                     this.searchList();
@@ -116,10 +116,10 @@ export default {
                 let res;
                 if (!this.editForm.id) {
                     // 新增
-                    res = await axios.post("http://localhost:8080/role/add", this.editForm);
+                    res = await axios.post("http://localhost:8081/role/add", this.editForm);
                 } else {
                     // 编辑
-                    res = await axios.post("http://localhost:8080/role/edit", this.editForm);
+                    res = await axios.post("http://localhost:8081/role/edit", this.editForm);
                 }
                 if (res.data.code === 200) {
                     ElMessage.success(res.data.msg);

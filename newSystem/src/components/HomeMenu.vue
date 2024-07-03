@@ -1,11 +1,14 @@
 <template>
     <el-menu :default-openeds="['1']">
-        <el-submenu v-for="(item, index) in useMenu" :index="(index + 1) + ''" :key="index">
-            <template #title><i :class="item.icon"></i>{{ item.name }}</template>
+        <el-sub-menu v-for="(item, index) in useMenu" :index="(index + 1) + ''" :key="index">
+            <template #title>
+                <i :class="item.icon"></i>
+                <span>{{ item.name }}</span>
+            </template>
             <el-menu-item v-for="(menu, ix) in item.children" :index="(index + 1) + '-' + ix" :key="ix">
                 <router-link :to="menu.path">{{ menu.name }}</router-link>
             </el-menu-item>
-        </el-submenu>
+        </el-sub-menu>
     </el-menu>
 </template>
 

@@ -118,7 +118,7 @@ export default {
             roleForm.userId = row.userId; // 需要修改的人的ID
             roleDialogVisible.value = true;
             try {
-                const res = await axios.get("http://10.17.226.10:8080/user/roles/" + row.userId);
+                const res = await axios.get("http://localhost:8081/user/roles/" + row.userId);
                 if (res.data.code == 200) {
                     roleForm.roleIds = res.data.data;
                 }
@@ -131,7 +131,7 @@ export default {
 
         const searchList = async () => {
             try {
-                const res = await axios.post("http://10.17.226.10:8080/user/teacher/list", form);
+                const res = await axios.post("http://localhost:8081/user/teacher/list", form);
                 users.value = res.data.data;
             } catch (err) {
                 if (err.response && err.response.data) {
@@ -142,7 +142,7 @@ export default {
 
         const editRoles = async () => {
             try {
-                const res = await axios.post("http://10.17.226.10:8080/user/editRoles", roleForm);
+                const res = await axios.post("http://localhost:8081/user/editRoles", roleForm);
                 if (res.data.code === 200) {
                     ElMessage.success("修改成功");
                     roleDialogVisible.value = false;
@@ -169,7 +169,7 @@ export default {
 
         const editUser = async () => {
             try {
-                const res = await axios.post("http://10.17.226.10:8080/user/edit", editForm);
+                const res = await axios.post("http://localhost:8081/user/edit", editForm);
                 if (res.data.code == 200) { // 正常情况
                     ElMessage.success(res.data.msg);
                     dialogFormVisible.value = false; // 关闭弹出框
@@ -189,7 +189,7 @@ export default {
                 await ElMessageBox.confirm(`你确定要删除<span style='color: red'><b>${row.name}</b></span>教师吗?`, "提示", {
                     dangerouslyUseHTMLString: true
                 });
-                const res = await axios.delete(`http://10.17.226.10:8080/user/teacher/delete/${row.id}`);
+                const res = await axios.delete(`http://localhost:8081/user/teacher/delete/${row.id}`);
                 if (res.data.code == 200) {
                     ElMessage.success(res.data.msg);
                     searchList();
@@ -208,7 +208,7 @@ export default {
             searchList();
             // 查询所有的角色列表
             try {
-                const res = await axios.post("http://10.17.226.10:8080/role/list", {});
+                const res = await axios.post("http://localhost:8081/role/list", {});
                 if (res.data.code == 200) {
                     roleList.value = res.data.data;
                     // 将学生的角色给禁用掉
