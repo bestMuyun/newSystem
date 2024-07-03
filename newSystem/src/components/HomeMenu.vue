@@ -49,7 +49,18 @@ export default {
                         roles: ['admin'],
                     },
                 ],
-            },
+            }, {
+                name: '仿真设备',
+                icon: '',
+                roles: ['admin', 'teacher'],
+                children: [
+                    {
+                        name: '仿真设备管理',
+                        path: '/admin/list',
+                        roles: ['admin', 'teacher']
+                    }
+                ]
+            }
         ]);
 
         const getMenu = (items, roles) => {

@@ -28,6 +28,10 @@ const routes = [{
         path: "/role/list",
         name: "role",
         component: () => import("@/components/role/RoleList.vue")
+    }, {
+        path: "/admin/list",
+        name: 'admin',
+        component: () => import("@/components/AdminList.vue")
     }]
 }
 ]

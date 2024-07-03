@@ -50,6 +50,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
+import axios from 'axios';
 
 const router = useRouter();
 
@@ -69,9 +70,17 @@ const register = () => {
         ElMessage.error('两次输入的密码不一致！');
         return;
     }
-    // 这里应该发起API请求进行注册操作
-    console.log('注册信息:', { username: username.value, password: password.value, email: email.value, address: address.value });
-    ElMessage.success('注册成功！'); // 假定注册成功
+    let data = {
+        username: username.value,
+        password: password.value,
+        email: email.value,
+        address: address.value
+    }
+    // 注册
+    axios.post("http://localhost:8081/user/register", data).then(res => {
+        this.$message.success(res.data.msg);
+        this.$router.push("/");
+    });
     goToLogin();
 };
 </script>

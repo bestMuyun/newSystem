@@ -33,7 +33,7 @@
         </el-table>
 
         <!-- 新增/编辑弹出框 -->
-        <el-dialog :title="addOrEditTitle" :visible.sync="dialogFormVisible" width="400px">
+        <el-dialog :title="addOrEditTitle" v-model="dialogFormVisible" width="400px">
             <el-form :model="editForm">
                 <el-form-item label="角色名称" :label-width="formLabelWidth">
                     <el-input v-model="editForm.roleName" autocomplete="off"></el-input>

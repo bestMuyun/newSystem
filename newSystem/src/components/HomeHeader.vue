@@ -11,11 +11,15 @@
                 <span class="el-dropdown-link">
                     个人中心<i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>修改密码</el-dropdown-item>
-                    <el-dropdown-item>个人信息</el-dropdown-item>
-                    <el-dropdown-item divided><a @click="logout">退出登录</a></el-dropdown-item>
-                </el-dropdown-menu>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item>修改密码</el-dropdown-item>
+                        <el-dropdown-item>个人信息</el-dropdown-item>
+                        <el-dropdown-item divided>
+                            <a @click="logout">退出登录</a>
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
             </el-dropdown>
         </div>
     </div>
@@ -28,15 +32,14 @@ export default {
     data() {
         return {
             logoUrl: logoImage,
-        }
+        };
     },
     methods: {
         logout() {
             this.$router.push("/");
-            localStorage.removeItem("token")
+            localStorage.removeItem("token");
         }
     }
-
 }
 </script>
 
