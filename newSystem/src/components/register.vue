@@ -17,25 +17,28 @@
                     placeholder="Please input password" show-password />
             </div>
             <br>
-            <div class="username">
+            <div class="confirm-password">
                 <span>确认密码</span>
-                <el-input v-model="username_2" style="width: 240px; margin-left: 0" placeholder="ensure password" />
+                <el-input v-model="confirmPassword" style="width: 240px; margin-left: 0"
+                    placeholder="confirm password" />
             </div>
             <br>
-            <div class="username">
+            <div class="email">
                 <span>email</span>
                 <el-input v-model="email" style="width: 240px; margin-left: 20px" placeholder="email" />
             </div>
             <br>
-            <div class="username">
+            <div class="address">
                 <span>家庭住址</span>
                 <el-input v-model="address" style="width: 240px; margin-left: 0" placeholder="address" />
             </div>
             <template #footer>
                 <div class="btn-container">
-                    <el-button class="btn-left" type="primary">登录</el-button>
-                    <el-button class="btn-right" type="primary" text @click="goRegister()">
-                        去注册
+                    <el-button class="btn-left" type="primary" @click="register()">
+                        注册
+                    </el-button>
+                    <el-button class="btn-right" type="primary" text @click="goToLogin()">
+                        去登录
                     </el-button>
                 </div>
             </template>
@@ -43,36 +46,34 @@
     </div>
 </template>
 
-<script>
-import { ref } from 'vue'
-export default {
-    name: "register",
-    setup() {
-        const username = ref('')
-        const password = ref('')
-        const username_2 = ref('')
-        const email = ref('')
-        const address = ref('')
-        return {
-            username,
-            password,
-            username_2,
-            email,
-            address
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { ElMessage } from 'element-plus';
 
-        }
-    },
-    methods: {
-        goRegister() {
-            let title = document.querySelector('.title');
-            if (title.innerHTML === '虚拟仿真平台登录入口') {
-                this.$router.push({ path: '/register' });
-            } else {
-                this.$router.push({ path: '/' });
-            }
-        }
+const router = useRouter();
+
+const username = ref('');
+const password = ref('');
+const confirmPassword = ref('');
+const email = ref('');
+const address = ref('');
+
+const goToLogin = () => {
+    router.push('/');
+};
+
+const register = () => {
+    // 简化的注册逻辑示例，实际应用中需要进一步验证和调用后端API
+    if (password.value !== confirmPassword.value) {
+        ElMessage.error('两次输入的密码不一致！');
+        return;
     }
-}
+    // 这里应该发起API请求进行注册操作
+    console.log('注册信息:', { username: username.value, password: password.value, email: email.value, address: address.value });
+    ElMessage.success('注册成功！'); // 假定注册成功
+    goToLogin();
+};
 </script>
 
 <style>

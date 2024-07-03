@@ -8,17 +8,18 @@
             </template>
             <div class="username">
                 <span>用户名</span>
-                <el-input v-model="username" style="width: 240px; margin-bottom: 15px" placeholder="username" />
+                <el-input id="username" v-model="username" style="width: 240px; margin-bottom: 15px"
+                    placeholder="username" />
             </div>
             <br>
             <div class="password">
                 <span>密码</span>
-                <el-input v-model="password" style="width: 240px; margin-left: 14px" type="password"
+                <el-input id="password" v-model="password" style="width: 240px; margin-left: 14px" type="password"
                     placeholder="Please input password" show-password />
             </div>
             <template #footer>
                 <div class="btn-container">
-                    <el-button class="btn-left" type="primary">登录</el-button>
+                    <el-button class="btn-left" type="primary" @click="login()">登录</el-button>
                     <el-button class="btn-right" type="primary" text @click="goRegister()">
                         去注册
                     </el-button>
@@ -29,31 +30,54 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-export default {
-    data() {
+import { ref, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 
-    },
-    name: "login",
+export default {
+    name: "Login",
     setup() {
-        const username = ref('')
-        const password = ref('')
+        const router = useRouter()
+        const route = useRoute()
+
+        const username = ref('');
+        const password = ref('');
+
+        const goRegister = () => {
+            router.push(route.meta.isLogin ? '/' : '/register');
+        };
+
+        const login = async () => {
+            try {
+                const response = await axios.post("http://10.17.226.10:8080/user/login", {
+                    account: username.value,
+                    password: password.value,
+                });
+
+                // 登录成功的处理
+                alert(response.data.msg); // 使用alert代替message组件，实际应使用Vue的消息提示组件
+                localStorage.setItem("user_info", JSON.stringify(response.data.data));
+                let roles = response.data.data.roles;
+                let roleNames = roles.map(role => role.roleName);
+                localStorage.setItem("user_roles", JSON.stringify(roleNames));
+                localStorage.setItem("token", response.data.data.token);
+
+                // 页面跳转
+                router.push("/home");
+            } catch (error) {
+                console.error('登录失败:', error);
+            }
+        };
+
+        // 返回需要在模板中使用的数据和方法
         return {
             username,
-            password
-        }
+            password,
+            goRegister,
+            login
+        };
     },
-    methods: {
-        goRegister() {
-            let title = document.querySelector('.title');
-            if (title.innerHTML === '虚拟仿真平台登录入口') {
-                this.$router.push({ path: '/register' });
-            } else {
-                this.$router.push({ path: '/' });
-            }
-        }
-    }
-}
+};
 </script>
 
 <style>
