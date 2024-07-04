@@ -95,7 +95,7 @@ export default {
         const users = ref([]);
 
         const searchList = () => {
-            axios.post("http://localhost:8081/user/student/list", form).then(res => {
+            axios.post("http://10.17.226.10:8081/user/student/list", form).then(res => {
                 users.value = res.data.data;
             }).catch(err => {
                 if (err.response && err.response.data) {
@@ -105,7 +105,7 @@ export default {
         };
 
         const editUser = () => {
-            axios.post("http://localhost:8081/user/edit", editForm).then(res => {
+            axios.post("http://10.17.226.10:8081/user/edit", editForm).then(res => {
                 if (res.data.code === 200) {
                     ElMessage.success(res.data.msg);
                     dialogFormVisible.value = false;
@@ -134,7 +134,7 @@ export default {
             ElMessageBox.confirm(`此操作将永久删除<span style='color: red'>${row.name}</span>学生, 是否继续?`, "学生信息删除", {
                 dangerouslyUseHTMLString: true
             }).then(() => {
-                axios.delete("http://localhost:8081/user/student/delete/" + row.id).then(res => {
+                axios.delete("http://10.17.226.10:8081/user/student/delete/" + row.id).then(res => {
                     if (res.data.code === 200) {
                         ElMessage.success(res.data.msg);
                         searchList();

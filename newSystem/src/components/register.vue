@@ -77,7 +77,7 @@ const register = () => {
         address: address.value
     }
     // 注册
-    axios.post("http://localhost:8081/user/register", data).then(res => {
+    axios.post("http://10.17.226.10:8081/user/register", data).then(res => {
         this.$message.success(res.data.msg);
         this.$router.push("/");
     });
