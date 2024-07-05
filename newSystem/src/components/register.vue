@@ -19,8 +19,8 @@
             <br>
             <div class="confirm-password">
                 <span>确认密码</span>
-                <el-input v-model="confirmPassword" style="width: 240px; margin-left: 0"
-                    placeholder="confirm password" />
+                <el-input v-model="confirmPassword" style="width: 240px; margin-left: 0" type="password"
+                    placeholder="confirm password" show-password />
             </div>
             <br>
             <div class="email">
@@ -29,8 +29,8 @@
             </div>
             <br>
             <div class="address">
-                <span>家庭住址</span>
-                <el-input v-model="address" style="width: 240px; margin-left: 0" placeholder="address" />
+                <span>电话号码</span>
+                <el-input v-model="phone" style="width: 240px; margin-left: 0" placeholder="phone" />
             </div>
             <template #footer>
                 <div class="btn-container">
@@ -58,7 +58,7 @@ const username = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const email = ref('');
-const address = ref('');
+const phone = ref('');
 
 const goToLogin = () => {
     router.push('/');
@@ -74,7 +74,7 @@ const register = () => {
         username: username.value,
         password: password.value,
         email: email.value,
-        address: address.value
+        address: phone.value
     }
     // 注册
     axios.post("http://10.17.226.10:8081/user/register", data).then(res => {

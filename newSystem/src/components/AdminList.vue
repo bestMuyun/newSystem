@@ -85,6 +85,8 @@
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import { ref, reactive, onMounted } from 'vue';
 import axios from 'axios';
 import { ElMessage, ElMessageBox } from 'element-plus';
@@ -92,6 +94,8 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 export default {
     name: "TeacherList",
     setup() {
+        const store = useStore();
+        const router = useRouter();
         const equipment = reactive({
             equipmentName: '',
             equipmentNum: '',
@@ -175,7 +179,18 @@ export default {
                     ElMessage.error(err.response.data.msg);
                 }
             });
-        }
+        };
+        const lookup = (row) => {
+            axios.post("http://10.17.226.10:8081/equipment/list", { equipmentName: row.equipmentName }).then(res => {
+                if (res.data.code == 200) {
+                    console.log(res.data.data);
+                    store.commit('setEquipment', res.data.data[0]);
+                    router.push("/equipment");
+                } else {
+                    ElMessage.error(res.data.msg);
+                }
+            })
+        };
         onMounted(() => {
             searchList();
         });
@@ -191,6 +206,7 @@ export default {
             deleteStudent,
             editEquipmentFun,
             onMounted,
+            lookup,
         };
     }
 };
