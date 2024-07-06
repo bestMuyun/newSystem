@@ -11,7 +11,7 @@
                 <el-main>
                     <router-view /><!-- 用来路由其他的子页面 -->
                 </el-main>
-                <el-footer>Footer</el-footer>
+                <el-footer></el-footer>
             </el-container>
         </el-container>
     </el-container>

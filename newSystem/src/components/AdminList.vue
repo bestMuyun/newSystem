@@ -81,6 +81,39 @@
                 <el-button type="primary" @click="editEquipmentFun">确 定</el-button>
             </template>
         </el-dialog>
+
+        <el-dialog title="新增设备" v-model="dialogAddEquipment" width="600px">
+            <el-form :model="addEquipment">
+                <el-form-item label="设备编号" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.equipmentNum" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="设备名称" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.equipmentName" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="类别" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.type" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="软件系统" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.softwareOs" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="版本号" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.softwareVersion" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="设备供应商" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.supplier" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="用途" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.usage" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="所在实验室" :label-width="formLabelWidth">
+                    <el-input v-model="addEquipment.laboratoryId" autocomplete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <template #footer>
+                <el-button @click="dialogEditEquipment = false">取 消</el-button>
+                <el-button type="primary" @click="addEquipmentFun">确 定</el-button>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -106,8 +139,24 @@ export default {
         const formLabelWidth = "100px";
 
         const dialogEditEquipment = ref(false);
+        const dialogAddEquipment = ref(false);
 
         const editEquipment = reactive({
+            equipmentName: '',
+            equipmentNum: '',
+            type: '',
+            softwareOs: '',
+            softwareVersion: '',
+            supplier: '',
+            status: '',
+            usage: '',
+            laboratoryId: '',
+            thumbnailUrl: '',
+            createtime: '',
+            updatetime: ''
+        });
+
+        const addEquipment = reactive({
             equipmentName: '',
             equipmentNum: '',
             type: '',
@@ -130,6 +179,10 @@ export default {
                 }
             });
         }
+
+        const addDevice = () => {
+            dialogAddEquipment.value = true;
+        };
         const openEdit = (row) => {
             editEquipment.equipmentNum = row.equipmentNum;
             editEquipment.equipmentName = row.equipmentName;
@@ -146,7 +199,7 @@ export default {
             dialogEditEquipment.value = true;
         }
         const deleteStudent = (row) => {
-            ElMessageBox.confirm(`此操作将永久删除<span style='color: red'>${row.equipmentName}</span>设备, 是否继续?`, "学生信息删除", {
+            ElMessageBox.confirm(`此操作将永久删除<span style='color: red'>${row.equipmentName}</span>设备, 是否继续?`, "设备信息删除", {
                 dangerouslyUseHTMLString: true
             }).then(() => {
                 axios.delete("http://10.17.226.10:8081/equipment/delete/" + row.equipmentNum).then(res => {
@@ -167,6 +220,21 @@ export default {
         }
         const editEquipmentFun = () => {
             axios.post("http://10.17.226.10:8081/equipment/update", editEquipment).then(res => {
+                if (res.data.code === 200) {
+                    ElMessage.success(res.data.msg);
+                    dialogAddEquipment.value = false;
+                    searchList();
+                } else {
+                    ElMessage.error(res.data.msg);
+                }
+            }).catch(err => {
+                if (err.response && err.response.data) {
+                    ElMessage.error(err.response.data.msg);
+                }
+            });
+        };
+        const addEquipmentFun = () => {
+            axios.post("http://10.17.226.10:8081/equipment/update", addEquipment).then(res => {
                 if (res.data.code === 200) {
                     ElMessage.success(res.data.msg);
                     dialogEditEquipment.value = false;
@@ -197,9 +265,12 @@ export default {
 
         return {
             formLabelWidth,
+            dialogAddEquipment,
             dialogEditEquipment,
             equipment,
             editEquipment,
+            addEquipment,
+            addEquipmentFun,
             equipment1,
             openEdit,
             searchList,
@@ -207,6 +278,7 @@ export default {
             editEquipmentFun,
             onMounted,
             lookup,
+            addDevice,
         };
     }
 };

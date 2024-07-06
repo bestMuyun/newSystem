@@ -32,12 +32,16 @@ const routes = [{
         path: "/admin/list",
         name: 'admin',
         component: () => import("@/components/AdminList.vue")
+    }, {
+        path: "/laboratory/list",
+        name: "laboratory",
+        component: () => import("@/components/laboratory.vue")
     }]
 }, {
     path: "/equipment",
     name: "equipment",
     component: () => import("@/components/equipment.vue")
-}
+},
 ]
 
 const router = createRouter({

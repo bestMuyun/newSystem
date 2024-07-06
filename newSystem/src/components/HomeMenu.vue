@@ -60,6 +60,17 @@ export default {
                         roles: ['admin', 'teacher']
                     }
                 ]
+            }, {
+                name: '实验室管理',
+                icon: '',
+                roles: ['admin', 'teacher'],
+                children: [
+                    {
+                        name: '实验室管理',
+                        path: '/laboratory/list',
+                        roles: ['admin', 'teacher']
+                    }
+                ]
             }
         ]);
 
