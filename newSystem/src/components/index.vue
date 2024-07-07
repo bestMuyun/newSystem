@@ -4,7 +4,7 @@
             <home-header />
         </el-header>
         <el-container>
-            <el-aside width="200px">
+            <el-aside width="190px">
                 <home-menu />
             </el-aside>
             <el-container>
@@ -81,5 +81,3 @@ body>.el-container {
     line-height: 320px;
 }
 </style>
-
-<style scoped></style>

@@ -69,6 +69,11 @@ export default {
                         name: '实验室管理',
                         path: '/laboratory/list',
                         roles: ['admin', 'teacher']
+                    },
+                    {
+                        name: '实验室审批',
+                        path: '/laboratory/approvals',
+                        roles: ['admin', 'teacher']
                     }
                 ]
             }

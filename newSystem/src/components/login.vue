@@ -1,45 +1,51 @@
 <template>
-    <div class="login-container">
-        <el-card class="login">
-            <template #header>
-                <div class="card-header">
-                    <span class="title">虚拟仿真平台登录入口</span>
+    <div>
+        <el-image style="width: 200px; height: 40px; margin-top: 10px" :src="logoUrl"></el-image>
+        <div class="login-container">
+            <el-card class="login">
+                <template #header>
+                    <div class="card-header">
+                        <span class="title">虚拟仿真平台登录入口</span>
+                    </div>
+                </template>
+                <div class="username">
+                    <span>用户名</span>
+                    <el-input id="username" v-model="username" style="width: 240px; margin-bottom: 15px"
+                        placeholder="username" />
                 </div>
-            </template>
-            <div class="username">
-                <span>用户名</span>
-                <el-input id="username" v-model="username" style="width: 240px; margin-bottom: 15px"
-                    placeholder="username" />
-            </div>
-            <br>
-            <div class="password">
-                <span>密码</span>
-                <el-input id="password" v-model="password" style="width: 240px; margin-left: 14px" type="password"
-                    placeholder="Please input password" show-password />
-            </div>
-            <template #footer>
-                <div class="btn-container">
-                    <el-button class="btn-left" type="primary" @click="login()">登录</el-button>
-                    <el-button class="btn-right" type="primary" text @click="goRegister()">
-                        去注册
-                    </el-button>
+                <br>
+                <div class="password">
+                    <span>密码</span>
+                    <el-input id="password" v-model="password" style="width: 240px; margin-left: 14px" type="password"
+                        placeholder="Please input password" show-password />
                 </div>
-            </template>
-        </el-card>
+                <template #footer>
+                    <div class="btn-container">
+                        <el-button class="btn-left" type="primary" @click="login()">登录</el-button>
+                        <el-button class="btn-right" type="primary" text @click="goRegister()">
+                            去注册
+                        </el-button>
+                    </div>
+                </template>
+            </el-card>
+        </div>
     </div>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
+import logoImage from '@/assets/cquptLogo.jpg';
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 export default {
     name: "Login",
     setup() {
+
         const router = useRouter()
         const route = useRoute()
-
+        const logoUrl = logoImage;
         const username = ref('');
         const password = ref('');
 
@@ -55,7 +61,7 @@ export default {
                 });
 
                 // 登录成功的处理
-                alert(response.data.msg); // 使用alert代替message组件，实际应使用Vue的消息提示组件
+                ElMessage.success(response.data.msg);
                 localStorage.setItem("user_info", JSON.stringify(response.data.data));
                 let roles = response.data.data.roles;
                 let roleNames = roles.map(role => role.roleName);
@@ -74,7 +80,8 @@ export default {
             username,
             password,
             goRegister,
-            login
+            login,
+            logoUrl,
         };
     },
 };
@@ -84,7 +91,7 @@ export default {
 .login-container {
     display: grid;
     place-items: center;
-    height: 100vh;
+    height: 80vh;
 }
 
 .login {
