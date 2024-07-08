@@ -8,13 +8,21 @@
             <el-main class="main">
                 <img id="photo" :src="photoUrl" alt="Original Image">
                 <div>
-                    <h1 class="name">设备名称：{{ equipment.equipmentName }}</h1>
                     <div class="equ">
-                        设备编号：{{ equipment.equipmentNum }}<br>
-                        所在实验室：{{ equipment.laboratoryId }}<br>
-                        设备状态：{{ equipment.status }}
-                        类别：{{ equipment.type }}，软件系统：{{ equipment.softwareOs }}，版本号：{{ equipment.softwareVersion
-                        }}，设备供应商：{{ equipment.supplier }}
+                        <el-descriptions title="设备信息" direction="vertical" :column="3" :size="size" border>
+                            <el-descriptions-item label="设备编号：">{{ equipment.equipmentNum }}</el-descriptions-item>
+                            <el-descriptions-item label="所在实验室：" :span="2"><el-tag size="large" style="width: 40px;">{{
+                                equipment.laboratoryId
+                                    }}</el-tag></el-descriptions-item>
+                            <el-descriptions-item label="设备状态：">{{ equipment.status }}</el-descriptions-item>
+                            <el-descriptions-item label="类别：">{{ equipment.type
+                                }}</el-descriptions-item>
+                            <el-descriptions-item label="软件系统：">{{ equipment.softwareVersion }}</el-descriptions-item>
+                            <el-descriptions-item label="版本号：">{{ equipment.supplier }}</el-descriptions-item>
+                            <el-descriptions-item label="设备供应商：">
+                                {{ equipment.softwareOs }}
+                            </el-descriptions-item>
+                        </el-descriptions>
                     </div>
                 </div>
             </el-main>
@@ -112,7 +120,7 @@ body,
 
 .equ {
     position: absolute;
-    top: 15%;
+    top: 10%;
     left: 40%;
     font-size: 20px;
     width: 500px;

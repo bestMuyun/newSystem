@@ -43,14 +43,14 @@ html {
 
 .el-header,
 .el-footer {
-    background-color: #B3C0D1;
+    background-color: #79bbff;
     color: #333;
     text-align: center;
     line-height: 60px;
 }
 
 .el-aside {
-    background-color: #D3DCE6;
+    background-color: #a0cfff;
     color: #333;
     text-align: center;
     line-height: 200px;
@@ -61,7 +61,7 @@ html {
 }
 
 .el-main {
-    background-color: #E9EEF3;
+    background-color: #d9ecff;
     color: #333;
     text-align: center;
     /*line-height: 160px;*/

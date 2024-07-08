@@ -36,8 +36,6 @@ import { ElMessage, ElMessageBox } from 'element-plus';
 export default {
     name: "laboratoryApprovals",
     setup() {
-        const store = useStore();
-        const router = useRouter();
 
         const laboratoryApprovals = ref([]);
 

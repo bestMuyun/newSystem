@@ -8,13 +8,12 @@
         </div>
         <div class="div-right">
             <el-dropdown>
-                <el-button class="el-dropdown-link" type="info" plain>
+                <el-button class="el-dropdown-link" type="primary" plain>
                     个人中心<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <template #dropdown>
                     <el-dropdown-menu>
-                        <el-dropdown-item><a @click="gotoChangePassword">修改密码</a></el-dropdown-item>
-                        <el-dropdown-item><a @click="logout">个人信息</a></el-dropdown-item>
+                        <el-dropdown-item><a @click="gotoChangePassword">个人信息</a></el-dropdown-item>
                         <el-dropdown-item divided>
                             <a @click="logout">退出登录</a>
                         </el-dropdown-item>
@@ -39,7 +38,7 @@ export default {
             this.$router.push("/");
         },
         gotoChangePassword() {
-            this.$router.push("/changePassword");
+            this.$router.push("/user");
         }
     }
 }

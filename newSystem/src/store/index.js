@@ -17,6 +17,15 @@ const store = createStore({
                 createtime: '',
                 updatetime: ''
             },
+            user: {
+                name: '',
+                account: '',
+                email: '',
+                phone: '',
+                roles: [{
+                    roleName: '',
+                }]
+            }
         }
     },
     getters: {
@@ -36,6 +45,13 @@ const store = createStore({
             state.Equipment.thumbnailUrl = data.thumbnailUrl;
             state.Equipment.createtime = data.createtime;
             state.Equipment.updatetime = data.updatetime;
+        },
+        setUser(state, data) {
+            state.user.name = data.name;
+            state.user.account = data.account;
+            state.user.email = data.email;
+            state.user.phone = data.phone;
+            state.user.roles[0].roleName = data.roles[0].roleName;
         }
     },
     modules: {

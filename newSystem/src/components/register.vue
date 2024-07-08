@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="background">
         <el-image style="width: 200px; height: 40px; margin-top: 10px" :src="logoImage"></el-image>
         <div class="register-container">
             <el-card class="register">
@@ -10,7 +10,14 @@
                 </template>
                 <div class="username">
                     <span>用户名</span>
-                    <el-input v-model="username" style="width: 240px; margin-left: 14px;" placeholder="username" />
+                    <el-input v-model="username" style="width: 240px; margin-left: 14px;"
+                        placeholder="Please input username" />
+                </div>
+                <br>
+                <div class="account">
+                    <span>账号</span>
+                    <el-input v-model="account" style="width: 240px; margin-left: 29px;"
+                        placeholder="Please input account" />
                 </div>
                 <br>
                 <div class="password">
@@ -27,7 +34,7 @@
                 <br>
                 <div class="email">
                     <span>email</span>
-                    <el-input v-model="email" style="width: 240px; margin-left: 20px" placeholder="email" />
+                    <el-input v-model="email" style="width: 240px; margin-left: 29px" placeholder="email" />
                 </div>
                 <br>
                 <div class="address">
@@ -59,6 +66,7 @@ import axios from 'axios';
 const router = useRouter();
 
 const username = ref('');
+const account = ref('');
 const password = ref('');
 const confirmPassword = ref('');
 const email = ref('');
@@ -75,17 +83,21 @@ const register = () => {
         return;
     }
     let data = {
-        username: username.value,
+        name: username.value,
+        account: account.value,
         password: password.value,
         email: email.value,
         phone: phone.value
     }
     // 注册
     axios.post("http://10.17.226.10:8081/user/register", data).then(res => {
-        this.$message.success(res.data.msg);
-        this.$router.push("/");
+        if (res.data.code == 200) {
+            ElMessage.success("注册成功");
+            goToLogin();
+        } else {
+            ElMessage.error(res.data.msg);
+        }
     });
-    goToLogin();
 };
 
 </script>
