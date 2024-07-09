@@ -45,18 +45,23 @@ export default {
         const equipment = ref('');
         const router = useRouter();
         equipment.value = store.state.Equipment;
+        const type = store.state.user.type;
         onMounted(() => {
             photoUrl.value = store.state.Equipment.thumbnailUrl;
         });
-
         const goBack = () => {
-            router.push("/admin/list");
+            if (type == 0) {
+                router.push("/equipment/list");
+            } else {
+                router.push("/equipment/search");
+            }
         }
 
         return {
             photoUrl,
             backgroundImage,
             equipment,
+            type,
             goBack,
         };
     }

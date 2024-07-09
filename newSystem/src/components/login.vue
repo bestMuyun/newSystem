@@ -72,7 +72,7 @@ export default {
                 localStorage.setItem("user_roles", JSON.stringify(roleNames));
 
                 // 页面跳转
-                router.push("/home");
+                router.push("/hello");
             } catch (error) {
                 ElMessage.error("登录失败");
                 console.error('登录失败:', error);

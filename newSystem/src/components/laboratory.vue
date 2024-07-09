@@ -32,14 +32,14 @@
             </el-table-column>
             <el-table-column prop="user" label="使用人">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
+            <el-table-column fixed="right" label="操作" width="150">
                 <template #header>
                     <el-button size="small" type="primary" @click="add">新增</el-button>
                 </template>
                 <template #default="scope">
-                    <el-button @click="openEdit(scope.row)" link size="small">编辑</el-button>
-                    <el-button @click="deleteLaboratory(scope.row)" link size="small">删除</el-button>
-                    <el-button @click="useOpen(scope.row)" link size="small">借用</el-button>
+                    <el-button @click="openEdit(scope.row)" link size="small" type="warning">编辑</el-button>
+                    <el-button @click="deleteLaboratory(scope.row)" link size="small" type="danger">删除</el-button>
+                    <el-button @click="useOpen(scope.row)" link size="small" type="success">借用</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -65,7 +65,10 @@
                     <el-input v-model="editLaboratory.workstationNum" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="实验室状态" :label-width="formLabelWidth">
-                    <el-input v-model="editLaboratory.status" autocomplete="off" disabled></el-input>
+                    <el-select v-model="editLaboratory.status" placeholder="请选择实验室状态">
+                        <el-option label="已占用" value="已占用"></el-option>
+                        <el-option label="未占用" value="未占用"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="使用人" :label-width="formLabelWidth">
                     <el-input v-model="editLaboratory.user" autocomplete="off"></el-input>
@@ -232,15 +235,20 @@ export default {
             dialogEditLaboratory.value = true;
         };
         const useOpen = (row) => {
-            useLaboratory.laboratoryName = row.laboratoryName;
-            useLaboratory.laboratoryNum = row.laboratoryNum;
-            useLaboratory.workstationNum = row.workstationNum;
-            useLaboratory.status = row.status;
-            useLaboratory.admin = row.admin;
-            useLaboratory.adminPhone = row.adminPhone;
-            useLaboratory.organization = row.organization;
-            useLaboratory.user = row.user;
-            dialogUseLaboratory.value = true;
+            if (row.status == "未占用") {
+                useLaboratory.laboratoryName = row.laboratoryName;
+                useLaboratory.laboratoryNum = row.laboratoryNum;
+                useLaboratory.workstationNum = row.workstationNum;
+                useLaboratory.status = row.status;
+                useLaboratory.admin = row.admin;
+                useLaboratory.adminPhone = row.adminPhone;
+                useLaboratory.organization = row.organization;
+                useLaboratory.user = row.user;
+                dialogUseLaboratory.value = true;
+            } else {
+                ElMessage.error(`${row.laboratoryName}已被占用，无法申请`);
+            }
+
         };
         const searchNull = () => {
             axios.get("http://10.17.226.10:8081/laboratory/list").then(res => {
@@ -283,7 +291,16 @@ export default {
             });
         };
         const useLaboratoryFun = () => {
-
+            useLaboratory.status = 2;
+            axios.post("http://10.17.226.10:8081/laboratory/update", useLaboratory).then(res => {
+                if (res.data.code == 200) {
+                    ElMessage.success("申请成功");
+                    searchList();
+                } else {
+                    ElMessage.error("申请失败");
+                }
+                dialogUseLaboratory.value = false;
+            })
         };
         onMounted(() => {
             searchList();

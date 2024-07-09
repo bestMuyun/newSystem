@@ -30,10 +30,10 @@
             <el-table-column prop="phone" label="手机号码">
             </el-table-column>
 
-            <el-table-column fixed="right" label="操作" width="100">
+            <el-table-column fixed="right" label="操作" width="150px">
                 <template #default="scope">
-                    <el-button @click="openEdit(scope.row)" link size="small">编辑</el-button>
-                    <el-button link size="small" @click="deleteStudent(scope.row)">删除</el-button>
+                    <el-button @click="openEdit(scope.row)" link size="small" type="warning">编辑</el-button>
+                    <el-button link size="small" type="danger" @click="deleteStudent(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -49,6 +49,13 @@
                 </el-form-item>
                 <el-form-item label="账号" :label-width="formLabelWidth">
                     <el-input v-model="editForm.account" autocomplete="off" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="账号类型" :label-width="formLabelWidth">
+                    <el-select v-model="editForm.role" placeholder="请选择角色类型">
+                        <el-option label="学生" value="student"></el-option>
+                        <el-option label="教师" value="teacher"></el-option>
+                        <el-option label="管理员" value="admin"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="邮箱" :label-width="formLabelWidth">
                     <el-input v-model="editForm.email" autocomplete="off"></el-input>
@@ -88,7 +95,9 @@ export default {
             email: '',
             phone: '',
             account: '',
-            stuNo: ''
+            stuNo: '',
+            role: '',
+            type: '',
         });
 
         const formLabelWidth = '100px';
@@ -105,6 +114,15 @@ export default {
         };
 
         const editUser = () => {
+            console.log(editForm.role);
+            if (editForm.role == "admin") {
+                editForm.type = 0;
+            } else if (editForm.role == "teacher") {
+                editForm.type = 2;
+            } else if (editForm.role == "student") {
+                editForm.type = 1;
+            }
+            console.log(editForm.type);
             axios.post("http://10.17.226.10:8081/user/edit", editForm).then(res => {
                 if (res.data.code === 200) {
                     ElMessage.success(res.data.msg);
@@ -121,12 +139,19 @@ export default {
         };
 
         const openEdit = (row) => {
-            editForm.id = row.userId; // 确认使用 row.id 而不是 row.userId
+            editForm.id = row.userId;
             editForm.name = row.name;
             editForm.phone = row.phone;
             editForm.account = row.account;
             editForm.email = row.email;
             editForm.stuNo = row.stuNo;
+            if (row.type == 0) {
+                editForm.role = "admin";
+            } else if (row.type == 1) {
+                editForm.role = "student";
+            } else if (row.type == 2) {
+                editForm.role = "teacher";
+            }
             dialogFormVisible.value = true;
         };
 

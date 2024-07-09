@@ -13,6 +13,10 @@ const routes = [{
     name: 'home',
     component: () => import("@/components/index.vue"),
     children: [{
+        path: "/hello",
+        name: "hello",
+        component: () => import("@/components/hello.vue")
+    }, {
         path: "/user/student",
         name: "student",
         component: () => import("@/components/StudentList.vue")
@@ -23,21 +27,29 @@ const routes = [{
         component: () => import("@/components/TeacherList.vue")
     },
     {
-        path: "/role/list",
-        name: "role",
-        component: () => import("@/components/role/RoleList.vue")
+        path: "/equipment/search",
+        name: "equipmentSearch",
+        component: () => import("@/components/equipmentSearch.vue")
     }, {
-        path: "/admin/list",
-        name: 'admin',
-        component: () => import("@/components/AdminList.vue")
+        path: "/equipment/list",
+        name: 'laboratoryList.vue',
+        component: () => import("@/components/equipmentList.vue")
     }, {
-        path: "/laboratory/list",
+        path: "/laboratory",
         name: "laboratory",
         component: () => import("@/components/laboratory.vue")
     }, {
         path: "/laboratory/approvals",
         name: "laboratoryApprovals",
         component: () => import("@/components/laboratoryApprovals.vue")
+    }, {
+        path: "/laboratory/stu/list",
+        name: "laboratoryStuList",
+        component: () => import("@/components/laboratoryStuList.vue")
+    }, {
+        path: "/laboratory/use",
+        name: "laboratoryUse",
+        component: () => import("@/components/laboratoryUse.vue")
     }]
 }, {
     path: "/equipment",

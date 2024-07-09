@@ -10,9 +10,6 @@
             <el-form-item>
                 <el-button type="primary" @click="searchList">查询</el-button>
             </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="">导出</el-button>
-            </el-form-item>
         </el-form>
 
         <el-table :data="equipment1" stripe style="width: 100%">
@@ -34,14 +31,14 @@
             </el-table-column>
             <el-table-column prop="updatetime" label="更新时间">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
+            <el-table-column fixed="right" label="操作" width="150px">
                 <template #header>
                     <el-button size="small" type="primary" @click="addDevice">新增</el-button>
                 </template>
                 <template #default="scope">
-                    <el-button @click="openEdit(scope.row)" link size="small">编辑</el-button>
-                    <el-button @click="deleteStudent(scope.row)" link size="small">删除</el-button>
-                    <el-button @click="lookup(scope.row)" link size="small">查看</el-button>
+                    <el-button @click="openEdit(scope.row)" link size="small" type="warning">编辑</el-button>
+                    <el-button @click="deleteStudent(scope.row)" link size="small" type="danger">删除</el-button>
+                    <el-button @click="lookup(scope.row)" link size="small" type="success">查看</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -110,7 +107,7 @@
                 </el-form-item>
             </el-form>
             <template #footer>
-                <el-button @click="dialogEditEquipment = false">取 消</el-button>
+                <el-button @click="dialogAddEquipment = false">取 消</el-button>
                 <el-button type="primary" @click="addEquipmentFun">确 定</el-button>
             </template>
         </el-dialog>
@@ -222,21 +219,6 @@ export default {
             axios.post("http://10.17.226.10:8081/equipment/update", editEquipment).then(res => {
                 if (res.data.code === 200) {
                     ElMessage.success(res.data.msg);
-                    dialogAddEquipment.value = false;
-                    searchList();
-                } else {
-                    ElMessage.error(res.data.msg);
-                }
-            }).catch(err => {
-                if (err.response && err.response.data) {
-                    ElMessage.error(err.response.data.msg);
-                }
-            });
-        };
-        const addEquipmentFun = () => {
-            axios.post("http://10.17.226.10:8081/equipment/update", addEquipment).then(res => {
-                if (res.data.code === 200) {
-                    ElMessage.success(res.data.msg);
                     dialogEditEquipment.value = false;
                     searchList();
                 } else {
@@ -248,11 +230,25 @@ export default {
                 }
             });
         };
+        const addEquipmentFun = () => {
+            axios.post("http://10.17.226.10:8081/equipment/addEuipment", addEquipment).then(res => {
+                if (res.data.code === 200) {
+                    ElMessage.success(res.data.msg);
+                    dialogAddEquipment.value = false;
+                    searchList();
+                } else {
+                    ElMessage.error(res.data.msg);
+                }
+            }).catch(err => {
+                if (err.response && err.response.data) {
+                    ElMessage.error(err.response.data.msg);
+                }
+            });
+        };
         const lookup = (row) => {
-            axios.post("http://10.17.226.10:8081/equipment/list", { equipmentName: row.equipmentName }).then(res => {
+            axios.post("http://10.17.226.10:8081/equipment/exact", { equipmentName: row.equipmentName }).then(res => {
                 if (res.data.code == 200) {
-                    console.log(res.data.data);
-                    store.commit('setEquipment', res.data.data[0]);
+                    store.commit('setEquipment', res.data.data);
                     router.push("/equipment");
                 } else {
                     ElMessage.error(res.data.msg);

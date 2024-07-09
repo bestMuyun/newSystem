@@ -2,26 +2,15 @@
     <div id="app">
         <router-view />
     </div>
-    <!-- <register></register> -->
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
-import login from '@/components/login.vue'
-import register from '@/components/register.vue'
-import index from '@/components/index.vue'
-
 
 export default {
     name: 'App',
     data() {
         return
     },
-    components: {
-        login,
-        register,
-        index
-    }
 }
 
 

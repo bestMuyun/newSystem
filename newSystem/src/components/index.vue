@@ -26,12 +26,7 @@ import HomeHeader from "@/components/HomeHeader.vue";
 const router = useRouter();
 const route = useRoute();
 
-onMounted(() => {
-    const item = localStorage.getItem("token");
-    if (!item) {
-        router.push("/");
-    }
-});
+
 </script>
 
 <style>

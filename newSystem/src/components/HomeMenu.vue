@@ -21,7 +21,7 @@ export default {
         const menus = ref([
             {
                 name: '用户管理',
-                icon: 'el-icon-message',
+                roles: ['admin'],
                 children: [
                     {
                         name: '学生列表',
@@ -30,50 +30,51 @@ export default {
                     {
                         name: '教师列表',
                         path: '/user/teacher',
-                        roles: ['teacher', 'admin'],
                     },
                 ],
             },
             {
-                name: '系统管理',
-                icon: 'el-icon-menu',
-                roles: ['teacher', 'admin'],
-                children: [
-                    {
-                        name: '系统管理',
-                        path: '',
-                    },
-                    {
-                        name: '角色列表',
-                        path: '/role/list',
-                        roles: ['admin'],
-                    },
-                ],
-            }, {
                 name: '仿真设备',
-                icon: '',
-                roles: ['admin', 'teacher'],
                 children: [
                     {
                         name: '仿真设备管理',
-                        path: '/admin/list',
+                        path: '/equipment/list',
                         roles: ['admin', 'teacher']
+                    },
+                    {
+                        name: '仿真设备列表',
+                        path: '/equipment/search',
+                        roles: ['student']
                     }
                 ]
             }, {
                 name: '实验室管理',
-                icon: '',
                 roles: ['admin', 'teacher'],
                 children: [
                     {
                         name: '实验室管理',
-                        path: '/laboratory/list',
+                        path: '/laboratory',
                         roles: ['admin', 'teacher']
                     },
                     {
                         name: '实验室审批',
                         path: '/laboratory/approvals',
                         roles: ['admin', 'teacher']
+                    }
+                ]
+            },
+            {
+                name: '实验室借用',
+                icon: '',
+                children: [
+                    {
+                        name: '实验室借用',
+                        path: '/laboratory/stu/list',
+                        roles: ['student', 'teacher']
+                    },
+                    {
+                        name: '我的实验室',
+                        path: '/laboratory/use',
                     }
                 ]
             }

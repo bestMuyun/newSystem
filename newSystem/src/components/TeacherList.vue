@@ -29,26 +29,13 @@
             </el-table-column>
             <el-table-column prop="phone" label="手机号码">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="150">
+            <el-table-column fixed="right" label="操作" width="200">
                 <template #default="scope">
-                    <el-button @click="openRoleDialog(scope.row)" type="text" size="small">角色</el-button>
-                    <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-                    <el-button type="text" size="small" @click="deleteTeacher(scope.row)">删除</el-button>
+                    <el-button @click="handleClick(scope.row)" link size="small" type="warning">编辑</el-button>
+                    <el-button link size="small" type="danger" @click="deleteTeacher(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
-
-        <el-dialog title="角色修改" v-model="roleDialogVisible" width="630px">
-            <el-transfer v-model="roleForm.roleIds" :titles="['未拥有角色', '已拥有角色']" :props="{
-                key: 'id',
-                label: 'roleDesc'
-            }" :data="roleList" class="transfer">
-            </el-transfer>
-            <template #footer>
-                <el-button @click="roleDialogVisible = false">取消</el-button>
-                <el-button type="primary" @click="editRoles">确定</el-button>
-            </template>
-        </el-dialog>
 
         <!-- 编辑弹出框 -->
         <el-dialog title="教师编辑" v-model="dialogFormVisible" width="600px">
@@ -57,7 +44,14 @@
                     <el-input v-model="editForm.teacherNo" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="姓名" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.name" autocomplete="off"></el-input>
+                    <el-input v-model="editForm.name" autoycomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="账号类型" :label-width="formLabelWidth">
+                    <el-select v-model="editForm.role" placeholder="请选择角色类型">
+                        <el-option label="学生" value="student"></el-option>
+                        <el-option label="教师" value="teacher"></el-option>
+                        <el-option label="管理员" value="admin"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="账号" :label-width="formLabelWidth">
                     <el-input v-model="editForm.account" autocomplete="off" disabled></el-input>
@@ -101,33 +95,16 @@ export default {
             phone: '',
             account: '',
             email: '',
-            teacherNo: ''
-        });
-
-        const roleList = ref([]); // 所有的角色list
-        const roleForm = reactive({
-            userId: '', // 要被更新的用户的ID
-            roleIds: []
+            teacherNo: '',
+            role: '',
+            type: '',
         });
 
         const dialogFormVisible = ref(false); // 默认不显示
         const roleDialogVisible = ref(false);
         const users = ref([]);
 
-        const openRoleDialog = async (row) => {
-            roleForm.userId = row.userId; // 需要修改的人的ID
-            roleDialogVisible.value = true;
-            try {
-                const res = await axios.get("http://10.17.226.10:8081/user/roles/" + row.userId);
-                if (res.data.code == 200) {
-                    roleForm.roleIds = res.data.data;
-                }
-            } catch (err) {
-                if (err.response && err.response.data) {
-                    ElMessage.error(err.response.data.msg);
-                }
-            }
-        };
+
 
         const searchList = async () => {
             try {
@@ -142,6 +119,7 @@ export default {
 
         const editRoles = async () => {
             try {
+
                 const res = await axios.post("http://10.17.226.10:8081/user/editRoles", roleForm);
                 if (res.data.code === 200) {
                     ElMessage.success("修改成功");
@@ -165,10 +143,24 @@ export default {
             editForm.account = row.account;
             editForm.phone = row.phone;
             editForm.id = row.userId;
+            if (row.type == 0) {
+                editForm.role = "admin";
+            } else if (row.type == 1) {
+                editForm.role = "student";
+            } else if (row.type == 2) {
+                editForm.role = "teacher";
+            }
         };
 
         const editUser = async () => {
             try {
+                if (editForm.role == "admin") {
+                    editForm.type = 0;
+                } else if (editForm.role == "teacher") {
+                    editForm.type = 2;
+                } else if (editForm.role == "student") {
+                    editForm.type = 1;
+                }
                 const res = await axios.post("http://10.17.226.10:8081/user/edit", editForm);
                 if (res.data.code == 200) { // 正常情况
                     ElMessage.success(res.data.msg);
@@ -206,35 +198,14 @@ export default {
 
         onMounted(async () => {
             searchList();
-            // 查询所有的角色列表
-            try {
-                const res = await axios.post("http://10.17.226.10:8081/role/list", {});
-                if (res.data.code == 200) {
-                    roleList.value = res.data.data;
-                    // 将学生的角色给禁用掉
-                    roleList.value.forEach(item => {
-                        item['disabled'] = item.roleName === 'student';
-                    });
-                    return;
-                }
-                ElMessage.error(res.data.msg);
-            } catch (err) {
-                if (err.response && err.response.data) {
-                    ElMessage.error(err.response.data.msg);
-                }
-            }
         });
 
         return {
             form,
             formLabelWidth,
             editForm,
-            roleList,
-            roleForm,
             dialogFormVisible,
-            roleDialogVisible,
             users,
-            openRoleDialog,
             searchList,
             editRoles,
             handleClick,

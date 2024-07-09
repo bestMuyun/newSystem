@@ -22,6 +22,7 @@ const store = createStore({
                 account: '',
                 email: '',
                 phone: '',
+                type: '',
                 roles: [{
                     roleName: '',
                 }]
@@ -51,6 +52,7 @@ const store = createStore({
             state.user.account = data.account;
             state.user.email = data.email;
             state.user.phone = data.phone;
+            state.user.type = data.type;
             state.user.roles[0].roleName = data.roles[0].roleName;
         }
     },
