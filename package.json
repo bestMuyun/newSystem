@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "axios": "^1.7.2"
-  },
-  "dependencies": {
-    "vuex": "^4.1.0"
-  }
-}

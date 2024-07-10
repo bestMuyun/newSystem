@@ -19,7 +19,7 @@
                                 <el-descriptions-item label="email" :span="2">{{ userData.email
                                     }}</el-descriptions-item>
                                 <el-descriptions-item label="身份">
-                                    <el-tag>{{ userData.roles[0].roleName }}</el-tag>
+                                    <el-tag>{{ role.roleName }}</el-tag>
                                 </el-descriptions-item>
                             </el-descriptions>
                             <el-divider />
@@ -114,6 +114,9 @@ export default {
             account: '',
             password: ''
         })
+        const role = reactive({
+            roleName: '',
+        })
         userData.value = store.state.user;
         const goBack = () => {
             router.push("/hello");
@@ -124,8 +127,17 @@ export default {
             editUserInfo.name = userData.value.name;
             editUserInfo.email = userData.value.email;
             editUserInfo.phone = userData.value.phone;
-            editUserInfo.type = userData.type;
+            editUserInfo.type = userData.value.type;
             userAccount.account = userData.value.account;
+            if (userData.value.type == 0) {
+                role.roleName = "admin";
+            } else if (userData.value.type == 1) {
+                role.roleName = "student";
+            } else if (userData.value.type == 2) {
+                role.roleName = "teacher";
+            }
+            console.log(userData.value.type);
+            console.log(role.roleName);
         }
         const searchUser = (account) => {
             axios.post("http://10.17.226.10:8081/user/info", account).then(res => {
@@ -197,6 +209,7 @@ export default {
             editUser,
             userAccount,
             editPassword,
+            role,
             dialogPassword,
         }
     }
